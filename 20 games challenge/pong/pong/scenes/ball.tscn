@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://y38yskxc4y8u"]
+
+[ext_resource type="Script" path="res://scripts/ball.gd" id="1_kb4mq"]
+[ext_resource type="Texture2D" uid="uid://blqvrhcvk4mf2" path="res://assets/white-circle-emoji-clipart-lg.png" id="2_4ek1t"]
+[ext_resource type="AudioStream" uid="uid://chavycgg54dj0" path="res://assets/hitHurt.wav" id="3_n58ki"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g1ulk"]
+radius = 5.0
+
+[node name="Ball" type="CharacterBody2D"]
+script = ExtResource("1_kb4mq")
+
+[node name="BallCollision" type="CollisionShape2D" parent="."]
+position = Vector2(450, 250)
+shape = SubResource("CircleShape2D_g1ulk")
+
+[node name="BallSprite" type="Sprite2D" parent="."]
+position = Vector2(450, 250)
+scale = Vector2(0.00872873, 0.00872874)
+texture = ExtResource("2_4ek1t")
+
+[node name="BoostTimer" type="Timer" parent="."]
+wait_time = 4.0
+
+[node name="RespawnTimer" type="Timer" parent="."]
+
+[node name="Hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_n58ki")
+
+[connection signal="timeout" from="BoostTimer" to="." method="_on_boost_timer_timeout"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

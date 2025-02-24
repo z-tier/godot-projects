@@ -1,0 +1,217 @@
+[gd_scene load_steps=17 format=3 uid="uid://ccoafqceupqil"]
+
+[ext_resource type="Script" path="res://scripts/player1.gd" id="1_62euj"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_kjlji"]
+[ext_resource type="Script" path="res://scripts/player2.gd" id="2_fswlu"]
+[ext_resource type="Texture2D" uid="uid://b3pkqrsbsdwsh" path="res://assets/262-2624041_white-circle-png-transparent.png" id="3_tqanc"]
+[ext_resource type="PackedScene" uid="uid://y38yskxc4y8u" path="res://scenes/ball.tscn" id="4_3n48f"]
+[ext_resource type="Script" path="res://scripts/score1.gd" id="6_3eavi"]
+[ext_resource type="Script" path="res://scripts/score2.gd" id="7_r0q46"]
+[ext_resource type="PackedScene" uid="uid://n6dufe14wq5x" path="res://scenes/pause_menu.tscn" id="8_e1x36"]
+[ext_resource type="PackedScene" uid="uid://nqg1old683n6" path="res://scenes/info.tscn" id="9_8ijgv"]
+[ext_resource type="AudioStream" uid="uid://dnqagi57vqxq6" path="res://assets/pickupCoin.wav" id="10_i31kj"]
+
+[sub_resource type="SystemFont" id="SystemFont_aqc28"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p60nb"]
+size = Vector2(20, 82)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ifuh7"]
+a = Vector2(-450, -1.00114)
+b = Vector2(450, -0.998859)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_yao2c"]
+a = Vector2(-450, -1)
+b = Vector2(450, -1)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_uldeo"]
+a = Vector2(0, 504)
+b = Vector2(0, 0)
+
+[sub_resource type="SystemFont" id="SystemFont_157v2"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_kjlji")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 900.0
+offset_bottom = 504.0
+color = Color(0, 0, 0, 1)
+
+[node name="Player1Controls" type="Label" parent="Background"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 61.0
+offset_bottom = 37.0
+theme_override_fonts/font = SubResource("SystemFont_aqc28")
+text = "W / S"
+
+[node name="Player2Controls" type="Label" parent="Background"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -63.0
+offset_top = -37.0
+offset_right = -14.0
+offset_bottom = -14.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = SubResource("SystemFont_aqc28")
+text = "▲\\▼"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Player1" type="CharacterBody2D" parent="."]
+position = Vector2(96, 160)
+script = ExtResource("1_62euj")
+
+[node name="Player1SpriteA" type="ColorRect" parent="Player1"]
+offset_left = -10.0
+offset_top = -41.0
+offset_right = 10.0
+offset_bottom = 41.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Player1SpriteB" type="ColorRect" parent="Player1/Player1SpriteA"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 18.0
+offset_bottom = 80.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Player1Collision" type="CollisionShape2D" parent="Player1"]
+shape = SubResource("RectangleShape2D_p60nb")
+
+[node name="Player2" type="CharacterBody2D" parent="."]
+position = Vector2(96, 352)
+script = ExtResource("2_fswlu")
+
+[node name="Player2SpriteA" type="ColorRect" parent="Player2"]
+offset_left = -10.0
+offset_top = -41.0
+offset_right = 10.0
+offset_bottom = 41.0
+
+[node name="Player2SpriteB" type="ColorRect" parent="Player2/Player2SpriteA"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 18.0
+offset_bottom = 80.0
+color = Color(0, 0, 0, 1)
+
+[node name="Player2Collision" type="CollisionShape2D" parent="Player2"]
+shape = SubResource("RectangleShape2D_p60nb")
+
+[node name="Roof" type="StaticBody2D" parent="."]
+position = Vector2(450, 0)
+rotation = 3.14159
+
+[node name="RoofBoundary" type="CollisionShape2D" parent="Roof"]
+position = Vector2(0, 1)
+shape = SubResource("SegmentShape2D_ifuh7")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(450, 500)
+
+[node name="FloorBoundary" type="CollisionShape2D" parent="Floor"]
+position = Vector2(8.74228e-08, 5)
+shape = SubResource("SegmentShape2D_yao2c")
+
+[node name="LineThing" type="Line2D" parent="."]
+position = Vector2(360.399, 0)
+scale = Vector2(0.200002, 1)
+points = PackedVector2Array(438.001, 0, 438.001, 504)
+
+[node name="CircleThing" type="Sprite2D" parent="LineThing"]
+position = Vector2(438, 250)
+scale = Vector2(0.27708, 0.0554167)
+texture = ExtResource("3_tqanc")
+
+[node name="Ball" parent="." instance=ExtResource("4_3n48f")]
+position = Vector2(-2, 0)
+
+[node name="Score1Boundary" type="Area2D" parent="."]
+script = ExtResource("6_3eavi")
+
+[node name="Score1Collision" type="CollisionShape2D" parent="Score1Boundary"]
+shape = SubResource("SegmentShape2D_uldeo")
+
+[node name="Score2Boundary" type="Area2D" parent="."]
+position = Vector2(900, 0)
+script = ExtResource("7_r0q46")
+
+[node name="Score2Collision" type="CollisionShape2D" parent="Score2Boundary"]
+shape = SubResource("SegmentShape2D_uldeo")
+
+[node name="Points" type="CanvasLayer" parent="."]
+
+[node name="Player1Points" type="Label" parent="Points"]
+offset_left = 381.0
+offset_top = 22.0
+offset_right = 421.0
+offset_bottom = 59.0
+theme_override_fonts/font = SubResource("SystemFont_157v2")
+theme_override_font_sizes/font_size = 27
+text = "0"
+horizontal_alignment = 2
+
+[node name="Player2Points" type="Label" parent="Points"]
+offset_left = 475.0
+offset_top = 22.0
+offset_right = 515.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 27
+text = "0"
+
+[node name="InfoKeybinds" type="Label" parent="Points"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -886.0
+offset_top = -33.0
+offset_right = -681.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = SubResource("SystemFont_aqc28")
+text = "P to Pause, R to Restart"
+
+[node name="PauseOpacity" type="ColorRect" parent="."]
+visible = false
+offset_right = 900.0
+offset_bottom = 500.0
+color = Color(0, 0, 0, 0.74902)
+
+[node name="PauseMenu" parent="PauseOpacity" instance=ExtResource("8_e1x36")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="InfoOpacity" type="ColorRect" parent="."]
+visible = false
+offset_right = 900.0
+offset_bottom = 500.0
+color = Color(0, 0, 0, 0.74902)
+
+[node name="Information" parent="InfoOpacity" instance=ExtResource("9_8ijgv")]
+layout_mode = 1
+
+[node name="ScoredSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_i31kj")
+
+[connection signal="body_entered" from="Score1Boundary" to="Ball" method="_on_score_1_boundary_body_entered"]
+[connection signal="body_entered" from="Score1Boundary" to="Score1Boundary" method="_on_body_entered"]
+[connection signal="body_entered" from="Score2Boundary" to="Ball" method="_on_score_2_boundary_body_entered"]
+[connection signal="body_entered" from="Score2Boundary" to="Score2Boundary" method="_on_body_entered"]
